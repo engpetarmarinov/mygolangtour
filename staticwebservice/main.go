@@ -15,11 +15,14 @@ func main() {
 
 	http.HandleFunc("/json", func(writer http.ResponseWriter, r *http.Request) {
 		names := r.URL.Query()["name"]
+
+		jsonObject := map[string]string{}
+
 		var name string
 		if len(names) == 1 {
 			name = names[0]
+			jsonObject = map[string]string{"name": name}
 		}
-		jsonObject := map[string]string{"name": name}
 		enc := json.NewEncoder(writer)
 		err := enc.Encode(jsonObject)
 		if err != nil {
