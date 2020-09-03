@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func SetBomb(secs int) {
+func PlantABomb(secs int) {
 	tick := time.Tick(time.Second)
 	boom := time.After(time.Duration(secs) * time.Second)
 	for {
