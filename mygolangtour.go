@@ -14,6 +14,9 @@ func main() {
 	WebCrawlerPrint()
 
 	concurrency.FibonacciPrint(100)
+	concurrency.SetBomb(3)
+	concurrency.CountTo(1000)
+	concurrency.CompareEquivalentBinaryTreesTest()
 }
 
 func WebCrawlerPrint() {
