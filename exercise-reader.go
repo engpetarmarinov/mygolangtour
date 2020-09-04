@@ -11,6 +11,6 @@ func (r MyReader) Read(bytes []byte) (int, error) {
 	return len(bytes), nil
 }
 
-func main() {
+func ValidateMyReader() {
 	reader.Validate(MyReader{})
 }
