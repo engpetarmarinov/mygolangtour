@@ -12,7 +12,7 @@ func main() {
 	fmt.Println(cmp.Diff("Hello World", "Hello Go"))
 	ValidateMyReader()
 
-	WebCrawlerPrint()
+	go WebCrawlerPrint()
 
 	concurrency.FibonacciPrint(100)
 	concurrency.PlantABomb(3)
@@ -21,12 +21,6 @@ func main() {
 }
 
 func WebCrawlerPrint() {
-	crawlerResult := make(chan []string)
-	go func() {
-		crawlerResult <- concurrency.Crawl("http://slavi.bg", 10)
-	}()
-	defer func() {
-		links := <-crawlerResult
-		fmt.Printf("Fetched links: %v, Links: %v\n", len(links), links)
-	}()
+	links := concurrency.Crawl("http://slavi.bg", 10)
+	fmt.Printf("Fetched links: %v, Links: %v\n", len(links), links)
 }

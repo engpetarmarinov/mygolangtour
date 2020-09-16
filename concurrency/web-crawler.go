@@ -5,6 +5,7 @@ import (
 	"golang.org/x/net/html"
 	"net/http"
 	"net/url"
+	"runtime"
 	"strings"
 	"sync"
 )
@@ -50,13 +51,16 @@ func Crawl(url string, depth int) []string {
 // Crawl uses fetcher to recursively crawl
 // pages starting with url, to a maximum of depth.
 func crawl(url string, depth int, fetcher Fetcher) []string {
-	quit := make(chan bool)
-	fetchedUrls := fetchedUrls{urls: make(map[string]bool)}
-	go crawlRecursive(url, depth, fetcher, &fetchedUrls, quit)
+	fmt.Printf("%v LogicalCPUs\n", runtime.NumCPU())
+	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	// We will not quit until we have something
-	// in the "quit" channel
-	<-quit
+	fetchedUrls := fetchedUrls{urls: make(map[string]bool)}
+	var waitGrp = sync.WaitGroup{}
+	waitGrp.Add(1)
+	go crawlRecursive(url, depth, fetcher, &fetchedUrls, &waitGrp)
+
+	waitGrp.Wait()
+
 	keysUrls := make([]string, 0, len(fetchedUrls.urls))
 	for u, fetched := range fetchedUrls.urls {
 		if fetched {
@@ -67,39 +71,34 @@ func crawl(url string, depth int, fetcher Fetcher) []string {
 	return keysUrls
 }
 
-func crawlRecursive(url1 string, depth int, fetcher Fetcher, fetchedUrls *fetchedUrls, quit chan bool) {
+func crawlRecursive(urlToFetch string, depth int, fetcher Fetcher, fetchedUrls *fetchedUrls, waitGrp *sync.WaitGroup) {
 	defer func() {
-		fetchedUrls.Update(url1, true)
-		quit <- true
+		fetchedUrls.Update(urlToFetch, true)
+		waitGrp.Done()
 	}()
 	if depth <= 0 {
 		return
 	}
-	if fetchedUrls.Add(url1) != true {
+	if fetchedUrls.Add(urlToFetch) != true {
 		return
 	}
 
-	_, urls, err := fetcher.Fetch(url1)
+	_, urls, err := fetcher.Fetch(urlToFetch)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	//fmt.Printf("found: %s %q\n", url1, body)
 
-	quitChild := make(chan bool)
+	var waitGrpChildren = sync.WaitGroup{}
+
 	for _, u := range urls {
-		if !strings.Contains(u, url1) {
+		if !strings.Contains(u, urlToFetch) {
 			continue
 		}
-		go crawlRecursive(u, depth-1, fetcher, fetchedUrls, quitChild)
+		waitGrpChildren.Add(1)
+		go crawlRecursive(u, depth-1, fetcher, fetchedUrls, &waitGrpChildren)
 	}
-	// To exit goroutines. This channel will always be filled
-	for _, u := range urls {
-		if !strings.Contains(u, url1) {
-			continue
-		}
-		<-quitChild
-	}
+	waitGrpChildren.Wait()
 }
 
 // http fetcher that fetches an url
