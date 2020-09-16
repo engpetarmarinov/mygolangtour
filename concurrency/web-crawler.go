@@ -2,12 +2,14 @@ package concurrency
 
 import (
 	"fmt"
+	"github.com/wildalmighty/mygolangtour/utils"
 	"golang.org/x/net/html"
 	"net/http"
 	"net/url"
 	"runtime"
 	"strings"
 	"sync"
+	"time"
 )
 
 type fetchedUrls struct {
@@ -51,7 +53,8 @@ func Crawl(url string, depth int) []string {
 // Crawl uses fetcher to recursively crawl
 // pages starting with url, to a maximum of depth.
 func crawl(url string, depth int, fetcher Fetcher) []string {
-	fmt.Printf("%v LogicalCPUs\n", runtime.NumCPU())
+	defer utils.TimeTrack(time.Now(), "crawler")
+
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	fetchedUrls := fetchedUrls{urls: make(map[string]bool)}
