@@ -2,6 +2,8 @@ package concurrency
 
 import (
 	"fmt"
+	"github.com/wildalmighty/mygolangtour/utils"
+	"time"
 )
 
 func Fibonacci(n int, c chan<- uint64) {
@@ -14,7 +16,8 @@ func Fibonacci(n int, c chan<- uint64) {
 }
 
 func FibonacciPrint(n int) {
-	c := make(chan uint64)
+	defer utils.TimeTrack(time.Now(), fmt.Sprintf("fibonacci of %v", n))
+	c := make(chan uint64, n)
 	go Fibonacci(n, c)
 
 	fmt.Printf("Fibonacci up to %vth element:", n)
