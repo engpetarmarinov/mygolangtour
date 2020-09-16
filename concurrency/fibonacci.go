@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func Fibonacci(n int, c chan int) {
+func Fibonacci(n int, c chan<- int) {
 	x, y := 0, 1
 	for i := 0; i < n; i++ {
 		c <- x
