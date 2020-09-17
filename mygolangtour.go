@@ -12,37 +12,37 @@ import (
 func main() {
 	var wg = sync.WaitGroup{}
 
-	execInWaitGroup(func() {
-		fmt.Println(morestrings.ReverseRunes("!oG ,olleH"))
-		fmt.Println(cmp.Diff("Hello World", "Hello Go"))
-	}, &wg)
+	listOfFuncs := []func(){
+		func() {
+			fmt.Println(morestrings.ReverseRunes("!oG ,olleH"))
+			fmt.Println(cmp.Diff("Hello World", "Hello Go"))
+		},
+		func() {
+			ValidateMyReader()
+		},
+		func() {
+			log.Println("WebCrawlerPrint STARTED")
+			links := concurrency.Crawl("http://slavi.bg", 10)
+			fmt.Printf("Fetched links: %v, Links: %v\n", len(links), links)
+			log.Println("WebCrawlerPrint DONE")
+		},
+		func() {
+			concurrency.FibonacciPrint(100)
+		},
+		func() {
+			concurrency.PlantABomb(3)
+		},
+		func() {
+			concurrency.CountTo(10000000)
+		},
+		func() {
+			concurrency.CompareEquivalentBinaryTreesTest()
+		},
+	}
 
-	execInWaitGroup(func() {
-		ValidateMyReader()
-	}, &wg)
-
-	execInWaitGroup(func() {
-		log.Println("WebCrawlerPrint STARTED")
-		links := concurrency.Crawl("http://slavi.bg", 10)
-		fmt.Printf("Fetched links: %v, Links: %v\n", len(links), links)
-		log.Println("WebCrawlerPrint DONE")
-	}, &wg)
-
-	execInWaitGroup(func() {
-		concurrency.FibonacciPrint(100)
-	}, &wg)
-
-	execInWaitGroup(func() {
-		concurrency.PlantABomb(3)
-	}, &wg)
-
-	execInWaitGroup(func() {
-		concurrency.CountTo(100000000)
-	}, &wg)
-
-	execInWaitGroup(func() {
-		concurrency.CompareEquivalentBinaryTreesTest()
-	}, &wg)
+	for _, fun := range listOfFuncs {
+		execInWaitGroup(fun, &wg)
+	}
 
 	wg.Wait()
 }
