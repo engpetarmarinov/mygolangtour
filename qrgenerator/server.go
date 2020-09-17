@@ -9,7 +9,21 @@ import (
 
 var addr = flag.String("addr", ":1718", "http service address") // Q=17, R=18
 
-var templ = template.Must(template.New("qr").Parse(templateStr))
+var templ *template.Template
+
+type Page struct {
+	Title string
+	Url   string
+}
+
+func init() {
+	templateFilename := "./templates/index.gohtml"
+	tpl, err := template.ParseFiles(templateFilename)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	templ = tpl
+}
 
 func main() {
 	flag.Parse()
@@ -21,29 +35,11 @@ func main() {
 }
 
 func QR(w http.ResponseWriter, req *http.Request) {
-	err := templ.Execute(w, req.FormValue("s"))
+	err := templ.Execute(w, Page{
+		Title: "QR Code Generator",
+		Url:   req.FormValue("s"),
+	})
 	if err != nil {
 		log.Fatal("QR handler", err)
 	}
 }
-
-const templateStr = `
-<html>
-<head>
-<title>QR Link Generator</title>
-</head>
-<body>
-{{if .}}
-<img src="http://chart.apis.google.com/chart?chs=300x300&cht=qr&choe=UTF-8&chl={{.}}" />
-<br>
-{{.}}
-<br>
-<br>
-{{end}}
-<form action="/" name=f method="GET">
-    <input maxLength=1024 size=70 name=s value="" title="Text to QR Encode">
-    <input type=submit value="Show QR" name=qr>
-</form>
-</body>
-</html>
-`
