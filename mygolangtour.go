@@ -5,22 +5,52 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/wildalmighty/mygolangtour/concurrency"
 	"github.com/wildalmighty/mygolangtour/morestrings"
+	"log"
+	"sync"
 )
 
 func main() {
-	fmt.Println(morestrings.ReverseRunes("!oG ,olleH"))
-	fmt.Println(cmp.Diff("Hello World", "Hello Go"))
-	ValidateMyReader()
+	var wg = sync.WaitGroup{}
 
-	go WebCrawlerPrint()
+	execInWaitGroup(func() {
+		fmt.Println(morestrings.ReverseRunes("!oG ,olleH"))
+		fmt.Println(cmp.Diff("Hello World", "Hello Go"))
+	}, &wg)
 
-	concurrency.FibonacciPrint(10000)
-	concurrency.PlantABomb(3)
-	concurrency.CountTo(1000)
-	concurrency.CompareEquivalentBinaryTreesTest()
+	execInWaitGroup(func() {
+		ValidateMyReader()
+	}, &wg)
+
+	execInWaitGroup(func() {
+		log.Println("WebCrawlerPrint STARTED")
+		links := concurrency.Crawl("http://slavi.bg", 10)
+		fmt.Printf("Fetched links: %v, Links: %v\n", len(links), links)
+		log.Println("WebCrawlerPrint DONE")
+	}, &wg)
+
+	execInWaitGroup(func() {
+		concurrency.FibonacciPrint(100)
+	}, &wg)
+
+	execInWaitGroup(func() {
+		concurrency.PlantABomb(3)
+	}, &wg)
+
+	execInWaitGroup(func() {
+		concurrency.CountTo(100000000)
+	}, &wg)
+
+	execInWaitGroup(func() {
+		concurrency.CompareEquivalentBinaryTreesTest()
+	}, &wg)
+
+	wg.Wait()
 }
 
-func WebCrawlerPrint() {
-	links := concurrency.Crawl("http://slavi.bg", 10)
-	fmt.Printf("Fetched links: %v, Links: %v\n", len(links), links)
+func execInWaitGroup(funcToExec func(), wg *sync.WaitGroup) {
+	wg.Add(1)
+	go func() {
+		funcToExec()
+		wg.Done()
+	}()
 }
