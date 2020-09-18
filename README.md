@@ -3,11 +3,15 @@
 
 Just a playground to keep track of my GoLang learning curve
 * Exercises taken from https://tour.golang.org/
-###Requirements
+
+## Requirements
+
 * Go 1.13
 
-###CLI Cheatsheet
-####Building and running
+## CLI Cheatsheet
+
+### Building and running
+
 * Get it
   ```
   go get github.com/wildalmighty/mygolangtour
@@ -26,7 +30,9 @@ Just a playground to keep track of my GoLang learning curve
   ...
   concurrency.Crawl("http://slavi.bg", 10)
   ```
-####Testing
+  
+### Testing
+
 * Test all
     ```
     go test ./...
@@ -55,7 +61,9 @@ Just a playground to keep track of my GoLang learning curve
     ```
     go test -benchtime 2s -bench . ./concurrency
     ```
-####Others
+    
+### Others
+
 * List all dependencies
     ```
     go list -f {{.Deps}} ./concurrency
