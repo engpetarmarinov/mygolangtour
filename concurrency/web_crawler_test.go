@@ -25,6 +25,12 @@ func TestCrawl(t *testing.T) {
 	}
 }
 
+func BenchmarkCrawl(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		crawl("https://golang.org/", 4, fetcher)
+	}
+}
+
 func contains(s []string, e string) bool {
 	for _, a := range s {
 		if a == e {
