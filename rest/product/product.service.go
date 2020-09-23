@@ -45,7 +45,12 @@ func productHandler(writer http.ResponseWriter, request *http.Request) {
 			return
 		}
 		writer.Header().Set("Content-Type", "application/json")
-		writer.Write(productJson)
+		_, err = writer.Write(productJson)
+		if err != nil {
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		return
 	case http.MethodPut:
 		//update product in the list
 		newProduct, err := ioutil.ReadAll(request.Body)
@@ -98,7 +103,12 @@ func productsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		w.Write(productsJson)
+		_, err = w.Write(productsJson)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		return
 	case http.MethodPost:
 		//add a new product to the list
 		var newProduct Product
