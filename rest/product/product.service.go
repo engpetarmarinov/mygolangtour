@@ -63,17 +63,16 @@ func productHandler(writer http.ResponseWriter, request *http.Request) {
 			writer.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		existingProduct, err := getProduct(productID)
+		err = updateProduct(updatedProduct)
+
 		if err != nil {
 			writer.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		if existingProduct == nil {
-			writer.WriteHeader(http.StatusNotFound)
-			return
-		}
-		err = updateProduct(updatedProduct)
-
+		writer.WriteHeader(http.StatusOK)
+		return
+	case http.MethodDelete:
+		err := removeProduct(productID)
 		if err != nil {
 			writer.WriteHeader(http.StatusInternalServerError)
 			return
