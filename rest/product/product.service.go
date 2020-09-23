@@ -69,10 +69,11 @@ func productHandler(writer http.ResponseWriter, request *http.Request) {
 			return
 		}
 		if existingProduct == nil {
-			_, err = insertProduct(updatedProduct)
-		} else {
-			err = updateProduct(updatedProduct)
+			writer.WriteHeader(http.StatusNotFound)
+			return
 		}
+		err = updateProduct(updatedProduct)
+
 		if err != nil {
 			writer.WriteHeader(http.StatusInternalServerError)
 			return
