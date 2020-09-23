@@ -1,0 +1,82 @@
+{
+	"variables": [],
+	"info": {
+		"name": "mygolangtour/rest",
+		"_postman_id": "3921d576-813d-ff93-927a-1607eabfb84b",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "products",
+			"request": {
+				"url": "http://localhost:5000/api/products",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"manufacturer\": \"Nike2\",\n    \"productName\": \"Earth\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "products - add a new product",
+			"request": {
+				"url": "http://localhost:5000/api/products",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"manufacturer\": \"Nike2\",\n    \"productName\": \"Earth\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "product get",
+			"request": {
+				"url": "http://localhost:5000/api/products/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "product put",
+			"request": {
+				"url": "http://localhost:5000/api/products/1",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productId\": 1,\n    \"manufacturer\": \"Addiddas2\",\n    \"productName\": \"Sky\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

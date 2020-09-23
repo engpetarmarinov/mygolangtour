@@ -6,10 +6,11 @@ import (
 	"net/http"
 )
 
+const apiAddr = ":5000"
 const apiBasePath = "/api"
 
 func main() {
 	product.SetupRoutes(apiBasePath)
 
-	log.Fatal(http.ListenAndServe(":5000", nil))
+	log.Fatal(http.ListenAndServe(apiAddr, nil))
 }

@@ -21,7 +21,7 @@ func SetupRoutes(apiBasePath string) {
 }
 
 func productHandler(writer http.ResponseWriter, request *http.Request) {
-	urlPathSegment := strings.Split(request.URL.Path, "products/")
+	urlPathSegment := strings.Split(request.URL.Path, productsBasePath+"/")
 	productID, err := strconv.Atoi(urlPathSegment[len(urlPathSegment)-1])
 	if err != nil {
 		writer.WriteHeader(http.StatusNotFound)
