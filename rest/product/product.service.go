@@ -27,7 +27,11 @@ func productHandler(writer http.ResponseWriter, request *http.Request) {
 		writer.WriteHeader(http.StatusNotFound)
 		return
 	}
-	product := getProduct(productID)
+	product, err := getProduct(productID)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	if product == nil {
 		writer.WriteHeader(http.StatusNotFound)
 		return
@@ -59,7 +63,20 @@ func productHandler(writer http.ResponseWriter, request *http.Request) {
 			writer.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		addOrUpdateProduct(updatedProduct)
+		existingProduct, err := getProduct(productID)
+		if err != nil {
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		if existingProduct == nil {
+			_, err = insertProduct(updatedProduct)
+		} else {
+			err = updateProduct(updatedProduct)
+		}
+		if err != nil {
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 		writer.WriteHeader(http.StatusOK)
 		return
 	default:
@@ -70,7 +87,11 @@ func productHandler(writer http.ResponseWriter, request *http.Request) {
 func productsHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		productList := getProductList()
+		productList, err := getProductList()
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 		productsJson, err := json.Marshal(productList)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -95,10 +116,12 @@ func productsHandler(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		_, err = addOrUpdateProduct(newProduct)
+		_, err = insertProduct(newProduct)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
+
 		w.WriteHeader(http.StatusCreated)
 		return
 	}
