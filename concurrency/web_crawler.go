@@ -116,9 +116,10 @@ type result struct {
 }
 
 func (f httpFetcher) Fetch(url1 string) (string, []string, error) {
-	resp, err := http.Get(url1)
+	client := http.Client{Timeout: time.Second * 3}
+	resp, err := client.Get(url1)
 	if err != nil {
-		return "", nil, fmt.Errorf("not found: %s", url1)
+		return "", nil, fmt.Errorf("error fetching: %s, error: %s", url1, err)
 	}
 
 	if resp.StatusCode != http.StatusOK {
