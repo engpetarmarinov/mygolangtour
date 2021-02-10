@@ -129,8 +129,7 @@ func (f httpFetcher) Fetch(url1 string) (string, []string, error) {
 	//get all links
 	doc, err := html.Parse(resp.Body)
 	if err != nil {
-		fmt.Printf("parsing %s as HTML: %v\n", url1, err)
-		return "", nil, fmt.Errorf("error parsing body: %s", url1)
+		return "", nil, fmt.Errorf("parsing %s as HTML: %v\n", url1, err)
 	}
 
 	var links []string
@@ -146,9 +145,13 @@ func (f httpFetcher) Fetch(url1 string) (string, []string, error) {
 					if err != nil {
 						continue
 					}
-					a.Val = parsedUrl.Scheme + "://" + parsedUrl.Host + a.Val
-				}
 
+					if strings.HasPrefix(a.Val, "//") {
+						a.Val = "http:" + a.Val
+					} else {
+						a.Val = parsedUrl.Scheme + "://" + parsedUrl.Host + a.Val
+					}
+				}
 				links = append(links, a.Val)
 			}
 		}
