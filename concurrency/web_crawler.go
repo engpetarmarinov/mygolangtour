@@ -28,14 +28,14 @@ func (f *fetchedUrls) Add(url string) bool {
 	return true
 }
 
-func (f *fetchedUrls) Update(url string, fetched bool) bool {
+func (f *fetchedUrls) MarkFetched(url string) bool {
 	f.mut.Lock()
 	defer f.mut.Unlock()
 	url = strings.Trim(url, "/")
 	if _, ok := f.urls[url]; !ok {
 		return false
 	}
-	f.urls[url] = fetched
+	f.urls[url] = true
 	return true
 }
 
@@ -76,13 +76,13 @@ func crawl(url string, depth int, fetcher Fetcher) []string {
 
 func crawlRecursive(urlToFetch string, depth int, fetcher Fetcher, fetchedUrls *fetchedUrls, waitGrp *sync.WaitGroup) {
 	defer func() {
-		fetchedUrls.Update(urlToFetch, true)
+		fetchedUrls.MarkFetched(urlToFetch)
 		waitGrp.Done()
 	}()
 	if depth <= 0 {
 		return
 	}
-	if fetchedUrls.Add(urlToFetch) != true {
+	if !fetchedUrls.Add(urlToFetch) {
 		return
 	}
 
@@ -116,7 +116,7 @@ type result struct {
 }
 
 func (f httpFetcher) Fetch(url1 string) (string, []string, error) {
-	client := http.Client{Timeout: time.Second * 3}
+	client := http.Client{Timeout: time.Second * 10}
 	resp, err := client.Get(url1)
 	if err != nil {
 		return "", nil, fmt.Errorf("error fetching: %s, error: %s", url1, err)
@@ -128,32 +128,33 @@ func (f httpFetcher) Fetch(url1 string) (string, []string, error) {
 
 	//get all links
 	doc, err := html.Parse(resp.Body)
-	var links []string
 	if err != nil {
 		fmt.Printf("parsing %s as HTML: %v\n", url1, err)
-		links = nil
-	} else {
-		visitNode := func(n *html.Node) {
-			if n.Type == html.ElementNode && n.Data == "a" {
-				for _, a := range n.Attr {
-					if a.Key != "href" {
+		return "", nil, fmt.Errorf("error parsing body: %s", url1)
+	}
+
+	var links []string
+	visitNode := func(n *html.Node) {
+		if n.Type == html.ElementNode && n.Data == "a" {
+			for _, a := range n.Attr {
+				if a.Key != "href" {
+					continue
+				}
+				if strings.HasPrefix(a.Val, "/") {
+					//relative url, prefix with the domain
+					parsedUrl, err := url.Parse(url1)
+					if err != nil {
 						continue
 					}
-					if strings.HasPrefix(a.Val, "/") {
-						//relative url, prefix with the domain
-						parsedUrl, err := url.Parse(url1)
-						if err != nil {
-							continue
-						}
-						a.Val = parsedUrl.Scheme + "://" + parsedUrl.Host + a.Val
-					}
-
-					links = append(links, a.Val)
+					a.Val = parsedUrl.Scheme + "://" + parsedUrl.Host + a.Val
 				}
+
+				links = append(links, a.Val)
 			}
 		}
-		forEachNode(doc, visitNode, nil)
 	}
+
+	forEachNode(doc, visitNode, nil)
 
 	return doc.Data, links, nil
 }
