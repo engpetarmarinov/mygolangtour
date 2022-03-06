@@ -14,7 +14,7 @@ Just a playground to keep track of my GoLang learning curve
 
 * Get it
   ```
-  go get github.com/wildalmighty/mygolangtour
+  go get github.com/engpetarmarinov/mygolangtour
   ```
 * Run it with -race flog to generate warnings for potential race conditions
   ```
@@ -22,11 +22,11 @@ Just a playground to keep track of my GoLang learning curve
   ```
 * Install it
   ```
-  go install github.com/wildalmighty/mygolangtour
+  go install github.com/engpetarmarinov/mygolangtour
   ```
 * Consume it and use it
   ```
-  import "github.com/wildalmighty/mygolangtour/concurrency"
+  import "github.com/engpetarmarinov/mygolangtour/concurrency"
   ...
   concurrency.Crawl("http://slavi.bg", 10)
   ```
@@ -74,7 +74,7 @@ Just a playground to keep track of my GoLang learning curve
     ```
 * List all versions of the module
     ```
-    go list -m -versions github.com/wildalmighty/mygolangtour
+    go list -m -versions github.com/engpetarmarinov/mygolangtour
     ```
   and if you want to install an older version:
     ```
@@ -88,4 +88,4 @@ Just a playground to keep track of my GoLang learning curve
     ```
     godoc -http :8000
     ```
-    and open http://localhost:8000/pkg/github.com/wildalmighty/mygolangtour/concurrency/
+    and open http://localhost:8000/pkg/github.com/engpetarmarinov/mygolangtour/concurrency/
