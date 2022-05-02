@@ -50,6 +50,8 @@ func main() {
 				sig(2*time.Hour),
 				sig(1*time.Second),
 				sig(3*time.Second),
+				sig(1*time.Minute),
+				sig(3*time.Minute),
 			)
 			fmt.Printf("or-channel done after %v\n", time.Since(start))
 		},
