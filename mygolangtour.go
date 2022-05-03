@@ -7,6 +7,7 @@ import (
 	"github.com/wildalmighty/mygolangtour/concurrency"
 	"github.com/wildalmighty/mygolangtour/morestrings"
 	"log"
+	"math/rand"
 	"sync"
 	"time"
 )
@@ -25,12 +26,21 @@ func main() {
 		},
 		func() {
 			log.Println("WebCrawlerPrint STARTED")
-			links := concurrency.Crawl("https://slavi.bg", 10)
+			links := concurrency.Crawl("https://slavi.bg", 2)
 			fmt.Printf("Fetched links: %v, Links: %v\n", len(links), links)
 			log.Println("WebCrawlerPrint DONE")
 		},
 		func() {
 			concurrency.FibonacciPrint(100)
+		},
+		func() {
+			//pipeline
+			done := make(chan interface{})
+			defer close(done)
+			rand := func() interface{} { return rand.Int() }
+			for num := range concurrency.Take(done, concurrency.RepeatFn(done, rand), 10) {
+				fmt.Printf("Pipeline: take rand %d\n", num)
+			}
 		},
 		func() {
 			sig := func(after time.Duration) <-chan struct{} {
@@ -58,7 +68,7 @@ func main() {
 		func() {
 			for result := range concurrency.CheckStatus(ctx.Done(), "https://slavi.bg", "http://ffoooo.baar") {
 				if result.Error != nil {
-					fmt.Printf("CheckStatus error %v", result.Error)
+					fmt.Printf("CheckStatus error %v\n", result.Error)
 					continue
 				}
 
