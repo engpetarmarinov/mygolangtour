@@ -35,10 +35,11 @@ func main() {
 		},
 		func() {
 			//pipeline
-			done := make(chan interface{})
-			defer close(done)
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+
 			rand := func() interface{} { return rand.Int() }
-			for num := range concurrency.Take(done, concurrency.RepeatFn(done, rand), 10) {
+			for num := range concurrency.Take(ctx, concurrency.RepeatFn(ctx, rand), 10) {
 				fmt.Printf("Pipeline: take rand %d\n", num)
 			}
 		},

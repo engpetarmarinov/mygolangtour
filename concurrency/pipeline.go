@@ -1,13 +1,15 @@
 package concurrency
 
-func RepeatFn(done <-chan interface{}, fn func() interface{}) <-chan interface{} {
+import "context"
+
+func RepeatFn(ctx context.Context, fn func() interface{}) <-chan interface{} {
 	valueStream := make(chan interface{})
 	go func() {
 		defer close(valueStream)
 
 		for {
 			select {
-			case <-done:
+			case <-ctx.Done():
 				return
 			case valueStream <- fn():
 			}
@@ -17,14 +19,14 @@ func RepeatFn(done <-chan interface{}, fn func() interface{}) <-chan interface{}
 	return valueStream
 }
 
-func Take(done <-chan interface{}, valueStream <-chan interface{}, num int) <-chan interface{} {
+func Take(ctx context.Context, valueStream <-chan interface{}, num int) <-chan interface{} {
 	takeSteam := make(chan interface{})
 	go func() {
 		defer close(takeSteam)
 
 		for i := 0; i < num; i++ {
 			select {
-			case <-done:
+			case <-ctx.Done():
 				return
 			case takeSteam <- <-valueStream:
 
