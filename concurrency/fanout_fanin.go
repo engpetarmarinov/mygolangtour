@@ -3,6 +3,7 @@ package concurrency
 import (
 	"context"
 	"fmt"
+	"github.com/wildalmighty/mygolangtour/utils"
 	"math/rand"
 	"runtime"
 	"sync"
@@ -10,10 +11,9 @@ import (
 )
 
 func TestFanOutPrimeFinder(ctx context.Context) {
-	rand := func() interface{} { return rand.Intn(50000000) }
-
-	start := time.Now()
-	randIntStream := ToInt(ctx, RepeatFn(ctx, rand))
+	defer utils.TimeTrack(time.Now(), "TestFanOutPrimeFinder")
+	random := func() interface{} { return rand.Intn(50000000) }
+	randIntStream := ToInt(ctx, RepeatFn(ctx, random))
 
 	numFinders := runtime.NumCPU()
 	finders := make([]<-chan interface{}, numFinders)
@@ -24,8 +24,6 @@ func TestFanOutPrimeFinder(ctx context.Context) {
 	for prime := range Take(ctx, FanIn(ctx, finders...), 10) {
 		fmt.Printf("TestFanOutPrimeFinder: found prime number %d\n", prime)
 	}
-
-	fmt.Printf("TestFanOutPrimeFinder: search took %v\n", time.Since(start))
 }
 
 func naivePrimeFinder(ctx context.Context, intStream <-chan int) <-chan interface{} {

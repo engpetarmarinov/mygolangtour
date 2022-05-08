@@ -15,9 +15,6 @@ func PlantABomb(secs int) {
 		case <-boom:
 			fmt.Println("BOOM!")
 			return
-		default:
-			fmt.Println("    .")
-			time.Sleep(1000 * time.Millisecond)
 		}
 	}
 }

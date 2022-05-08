@@ -3,10 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/google/go-cmp/cmp"
 	"github.com/wildalmighty/mygolangtour/concurrency"
-	"github.com/wildalmighty/mygolangtour/morestrings"
-	"log"
+	"github.com/wildalmighty/mygolangtour/utils"
 	"math/rand"
 	"sync"
 	"time"
@@ -16,19 +14,10 @@ func main() {
 	var wg = sync.WaitGroup{}
 	ctx := context.Background()
 
-	listOfFuncs := []func(){
+	listOfFunctions := []func(){
 		func() {
-			fmt.Println(morestrings.ReverseRunes("!oG ,olleH"))
-			fmt.Println(cmp.Diff("Hello World", "Hello Go"))
-		},
-		func() {
-			ValidateMyReader()
-		},
-		func() {
-			log.Println("WebCrawlerPrint STARTED")
 			links := concurrency.Crawl("https://slavi.bg", 2)
 			fmt.Printf("Fetched links: %v, Links: %v\n", len(links), links)
-			log.Println("WebCrawlerPrint DONE")
 		},
 		func() {
 			concurrency.FibonacciPrint(100)
@@ -38,8 +27,8 @@ func main() {
 			ctx, cancel := context.WithCancel(context.Background())
 			defer cancel()
 
-			rand := func() interface{} { return rand.Int() }
-			for num := range concurrency.Take(ctx, concurrency.RepeatFn(ctx, rand), 10) {
+			random := func() interface{} { return rand.Int() }
+			for num := range concurrency.Take(ctx, concurrency.RepeatFn(ctx, random), 10) {
 				fmt.Printf("Pipeline: take rand %d\n", num)
 			}
 		},
@@ -51,6 +40,7 @@ func main() {
 			concurrency.TestFanOutPrimeFinder(ctx)
 		},
 		func() {
+			defer utils.TimeTrack(time.Now(), "or-channel")
 			sig := func(after time.Duration) <-chan struct{} {
 				c := make(chan struct{})
 				tick := time.Tick(after)
@@ -61,7 +51,7 @@ func main() {
 
 				return c
 			}
-			start := time.Now()
+
 			<-concurrency.Or(
 				sig(2*time.Hour),
 				sig(1*time.Second),
@@ -69,7 +59,6 @@ func main() {
 				sig(1*time.Minute),
 				sig(3*time.Minute),
 			)
-			fmt.Printf("or-channel done after %v\n", time.Since(start))
 		},
 		func() {
 			for result := range concurrency.CheckStatus(ctx.Done(), "https://slavi.bg", "http://ffoooo.baar") {
@@ -92,7 +81,7 @@ func main() {
 		},
 	}
 
-	for _, fun := range listOfFuncs {
+	for _, fun := range listOfFunctions {
 		execInWaitGroup(fun, &wg)
 	}
 

@@ -18,7 +18,7 @@ Just a playground to keep track of my GoLang learning curve
   ```
 * Run it with -race flog to generate warnings for potential race conditions
   ```
-  go run -race .
+  go run -race .\examples\concurrency\
   ```
 * Install it
   ```

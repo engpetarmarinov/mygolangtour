@@ -8,7 +8,7 @@ import (
 func TestCrawl(t *testing.T) {
 	fetchedUrls := crawl("https://golang.org/", 4, fetcher)
 	expected := []string{
-		"https://golang.org", "https://golang.org/pkg", "https://golang.org/pkg/fmt", "https://golang.org/pkg/os", "https://golang.org/cmd",
+		"https://golang.org", "https://golang.org/pkg", "https://golang.org/pkg/fmt", "https://golang.org/pkg/os", "https://golang.org/examples",
 	}
 	for _, fetchedUrl := range fetchedUrls {
 		if !contains(expected, fetchedUrl) {
@@ -16,7 +16,7 @@ func TestCrawl(t *testing.T) {
 		}
 	}
 	notExpected := []string{
-		"https://golang.org/cmd/",
+		"https://golang.org/examples/",
 	}
 	for _, fetchedUrl := range fetchedUrls {
 		if contains(notExpected, fetchedUrl) {
@@ -56,14 +56,14 @@ var fetcher = fakeFetcher{
 		"The Go Programming Language",
 		[]string{
 			"https://golang.org/pkg/",
-			"https://golang.org/cmd/",
+			"https://golang.org/examples/",
 		},
 	},
 	"https://golang.org/pkg/": &result{
 		"Packages",
 		[]string{
 			"https://golang.org/",
-			"https://golang.org/cmd/",
+			"https://golang.org/examples/",
 			"https://golang.org/pkg/fmt/",
 			"https://golang.org/pkg/os/",
 		},
