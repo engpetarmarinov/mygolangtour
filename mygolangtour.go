@@ -44,14 +44,19 @@ func main() {
 			}
 		},
 		func() {
+			//fan-out and fan-in
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+
+			concurrency.TestFanOutPrimeFinder(ctx)
+		},
+		func() {
 			sig := func(after time.Duration) <-chan struct{} {
 				c := make(chan struct{})
 				tick := time.Tick(after)
 				go func() {
 					defer close(c)
-					select {
-					case <-tick:
-					}
+					<-tick
 				}()
 
 				return c
