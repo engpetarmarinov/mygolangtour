@@ -79,6 +79,13 @@ func main() {
 		func() {
 			concurrency.CompareEquivalentBinaryTreesTest()
 		},
+		func() {
+			t1, _ := concurrency.NewTriangle(3, 3)
+			s1, _ := concurrency.NewSquare(5.0)
+
+			fmt.Printf("Shapes: FanOut sum of the areas is %f\n", concurrency.CalculateArea(t1, s1))
+			fmt.Printf("Shapes: WG sum of the areas is %f\n", concurrency.CalculateAreaWithWG(t1, s1))
+		},
 	}
 
 	for _, fun := range listOfFunctions {

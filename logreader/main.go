@@ -18,6 +18,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	defer f.Close()
 	r := bufio.NewReader(f)
 	for {
@@ -25,6 +26,7 @@ func main() {
 		if err != nil {
 			break
 		}
+
 		if strings.Contains(line, *level) {
 			fmt.Print(line)
 		}

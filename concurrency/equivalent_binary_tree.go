@@ -11,6 +11,7 @@ func Walk(t *tree.Tree, ch chan<- int) {
 	if t == nil {
 		return
 	}
+
 	walkRecursive(t, ch)
 	close(ch)
 }
@@ -19,6 +20,7 @@ func walkRecursive(t *tree.Tree, ch chan<- int) {
 	if t == nil {
 		return
 	}
+
 	walkRecursive(t.Right, ch)
 	ch <- t.Value
 	walkRecursive(t.Left, ch)
@@ -42,6 +44,7 @@ func Same(t1, t2 *tree.Tree) bool {
 			break
 		}
 	}
+
 	return true
 }
 
