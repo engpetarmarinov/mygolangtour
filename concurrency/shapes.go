@@ -111,6 +111,26 @@ func CalculateAreaWithWG(shapes ...Shape) float64 {
 	return sumOfAreas
 }
 
+func CalculateAreaWithoutChan(shapes ...Shape) float64 {
+	var wg sync.WaitGroup
+	areas := make([]float64, len(shapes))
+	for i, shape := range shapes {
+		wg.Add(1)
+		go func(i int, shape Shape) {
+			defer wg.Done()
+			areas[i] = shape.Area()
+		}(i, shape)
+	}
+	wg.Wait()
+
+	var sum float64
+	for _, area := range areas {
+		sum += area
+	}
+
+	return sum
+}
+
 func getAreaChan(ctx context.Context, shape Shape) <-chan interface{} {
 	areaChan := make(chan interface{})
 	go func(shape Shape, areaChan chan interface{}) {
