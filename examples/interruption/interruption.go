@@ -5,16 +5,17 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"syscall"
 	"time"
 )
 
 func main() {
 	ctx := context.Background()
 
-	// trap Interrupt and Kill and call cancel on the context
+	// trap Interrupt and Terminate and call cancel on the context
 	ctx, cancel := context.WithCancel(ctx)
 	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, os.Kill)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	defer func() {
 		signal.Stop(c)
 		cancel()
