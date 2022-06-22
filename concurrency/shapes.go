@@ -69,8 +69,8 @@ func (s *Square) Area() float64 {
 func CalculateArea(shapes ...Shape) float64 {
 	var sumOfAreas float64
 	areasChans := make([]<-chan interface{}, len(shapes))
-	ctx := context.Background()
-	defer ctx.Done()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
 	for _, shape := range shapes {
 		areaChan := getAreaChan(ctx, shape)
