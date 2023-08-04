@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	slice := utils.GenerateRandomIntSlice(100000, -10000000, 10000000)
+	slice := utils.GenerateRandomIntSlice(1000000, -1000000, 1000000)
 	slice2 := make([]int, len(slice))
 	copy(slice2, slice)
 	slice3 := make([]int, len(slice))
@@ -31,7 +31,7 @@ func main() {
 	fmt.Println("slice equals slice2:", utils.AreSlicesEqual(slice, slice2))
 	fmt.Println("slice2 equals slice3:", utils.AreSlicesEqual(slice2, slice3))
 	fmt.Println("slice equals slice3:", utils.AreSlicesEqual(slice, slice3))
-	fmt.Println("QuickSort took", quickSortDuration)
-	fmt.Println("QuickSortAlloc took", quickSortAllocDuration)
-	fmt.Println("sort.Ints took", sortIntsDuration)
+	fmt.Println("QuickSort took", quickSortDuration)           // QuickSort took 62.988459ms
+	fmt.Println("QuickSortAlloc took", quickSortAllocDuration) // QuickSortAlloc took 227.06875ms
+	fmt.Println("sort.Ints took", sortIntsDuration)            // sort.Ints took 119.821875ms
 }
