@@ -3,7 +3,7 @@ package concurrency
 import (
 	"context"
 	"fmt"
-	"github.com/wildalmighty/mygolangtour/utils"
+	"github.com/engpetarmarinov/mygolangtour/utils"
 	"math/rand"
 	"runtime"
 	"sync"

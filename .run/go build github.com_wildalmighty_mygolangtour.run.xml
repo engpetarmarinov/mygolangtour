@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="go build github.com/wildalmighty/mygolangtour" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+  <configuration default="false" name="go build github.com/engpetarmarinov/mygolangtour" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
     <module name="mygolangtour" />
     <working_directory value="$PROJECT_DIR$/" />
     <kind value="DIRECTORY" />
-    <package value="github.com/wildalmighty/mygolangtour/cond" />
+    <package value="github.com/engpetarmarinov/mygolangtour/cond" />
     <directory value="$PROJECT_DIR$/" />
     <filePath value="$PROJECT_DIR$/cond/cond_example.go" />
     <method v="2" />

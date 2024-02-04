@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/wildalmighty/mygolangtour/rest/database"
-	"github.com/wildalmighty/mygolangtour/rest/product"
+	"github.com/engpetarmarinov/mygolangtour/rest/database"
+	"github.com/engpetarmarinov/mygolangtour/rest/product"
 	"log"
 	"net/http"
 )

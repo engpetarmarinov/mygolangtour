@@ -3,7 +3,7 @@ package product
 import (
 	"database/sql"
 	"errors"
-	"github.com/wildalmighty/mygolangtour/rest/database"
+	"github.com/engpetarmarinov/mygolangtour/rest/database"
 	"log"
 )
 

@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/wildalmighty/mygolangtour/concurrency"
-	"github.com/wildalmighty/mygolangtour/utils"
+	"github.com/engpetarmarinov/mygolangtour/concurrency"
+	"github.com/engpetarmarinov/mygolangtour/utils"
 	"math/rand"
 	"sync"
 	"time"

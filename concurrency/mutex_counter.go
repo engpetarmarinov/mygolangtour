@@ -1,7 +1,7 @@
 package concurrency
 
 import (
-	"github.com/wildalmighty/mygolangtour/utils"
+	"github.com/engpetarmarinov/mygolangtour/utils"
 	"log"
 	"sync"
 	"time"

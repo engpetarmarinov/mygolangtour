@@ -1,4 +1,4 @@
-module github.com/wildalmighty/mygolangtour
+module github.com/engpetarmarinov/mygolangtour
 
 go 1.21
 

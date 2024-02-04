@@ -2,7 +2,7 @@ package concurrency
 
 import (
 	"fmt"
-	"github.com/wildalmighty/mygolangtour/utils"
+	"github.com/engpetarmarinov/mygolangtour/utils"
 	"time"
 )
 

@@ -2,7 +2,7 @@ package concurrency
 
 import (
 	"fmt"
-	"github.com/wildalmighty/mygolangtour/utils"
+	"github.com/engpetarmarinov/mygolangtour/utils"
 	"golang.org/x/net/html"
 	"net/http"
 	"net/url"

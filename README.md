@@ -1,5 +1,5 @@
 # mygolangtour
-![Build Status](https://travis-ci.org/wildalmighty/mygolangtour.svg?branch=master)
+![Build Status](https://travis-ci.org/engpetarmarinov/mygolangtour.svg?branch=master)
 
 Just a playground to keep track of my GoLang learning curve
 * Exercises taken from https://tour.golang.org/
@@ -78,11 +78,11 @@ Just a playground to keep track of my GoLang learning curve
     ```
   and if you want to install an older version:
     ```
-    go get github.com/wildalmighty/mygolangtour@v0.0.1
+    go get github.com/engpetarmarinov/mygolangtour@v0.0.1
     ```
 * Get doc for the API of a package
     ```
-    go doc github.com/wildalmighty/mygolangtour/concurrency
+    go doc github.com/engpetarmarinov/mygolangtour/concurrency
     ```
     or use godoc to spin up a web server with the documentation:
     ```

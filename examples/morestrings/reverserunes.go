@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/engpetarmarinov/mygolangtour/morestrings"
 	"github.com/google/go-cmp/cmp"
-	"github.com/wildalmighty/mygolangtour/morestrings"
 )
 
 func main() {

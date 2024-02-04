@@ -3,7 +3,7 @@ package product
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/wildalmighty/mygolangtour/rest/middleware"
+	"github.com/engpetarmarinov/mygolangtour/rest/middleware"
 	"io/ioutil"
 	"net/http"
 	"strconv"

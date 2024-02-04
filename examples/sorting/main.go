@@ -6,8 +6,8 @@ import (
 	"sort"
 	"time"
 
-	"github.com/wildalmighty/mygolangtour/sorting"
-	"github.com/wildalmighty/mygolangtour/utils"
+	"github.com/engpetarmarinov/mygolangtour/sorting"
+	"github.com/engpetarmarinov/mygolangtour/utils"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-module github.com/wildalmighty/mygolangtour/rest
+module github.com/engpetarmarinov/mygolangtour/rest
 
 go 1.13
 
