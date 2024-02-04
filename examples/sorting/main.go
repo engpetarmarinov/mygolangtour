@@ -20,7 +20,7 @@ func main() {
 	copy(slice4, slice)
 
 	start := time.Now()
-	sorting.QuickSort(slice, 0, len(slice)-1)
+	sorting.QuickSort(slice)
 	quickSortDuration := time.Since(start)
 
 	start = time.Now()

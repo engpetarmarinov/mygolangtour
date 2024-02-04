@@ -1,10 +1,21 @@
 package sorting
 
-func QuickSort(arr []int, low, high int) {
+func QuickSort(arr []int) {
+	arrLen := len(arr)
+	if arrLen <= 1 {
+		return
+	}
+
+	low := 0
+	high := len(arr) - 1
+	quickSortInPlace(arr, low, high)
+}
+
+func quickSortInPlace(arr []int, low, high int) {
 	if low < high {
 		pivotIndex := partition(arr, low, high)
-		QuickSort(arr, low, pivotIndex-1)
-		QuickSort(arr, pivotIndex+1, high)
+		quickSortInPlace(arr, low, pivotIndex-1)
+		quickSortInPlace(arr, pivotIndex+1, high)
 	}
 }
 
