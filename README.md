@@ -2,11 +2,10 @@
 ![Build Status](https://travis-ci.org/engpetarmarinov/mygolangtour.svg?branch=master)
 
 Just a playground to keep track of my GoLang learning curve
-* Exercises taken from https://tour.golang.org/
 
 ## Requirements
 
-* Go 1.13
+* Go 1.21
 
 ## CLI Cheatsheet
 
